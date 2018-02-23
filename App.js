@@ -1,111 +1,54 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Dimensions,
-  Image,
-  Button,
-  ScrollView,
-  AsyncStorage,
-  TouchableOpacity
-} from 'react-native';
-import MapView from 'react-native-maps';
-import { DrawerNavigator, StackNavigator } from 'react-navigation';
-import MapMopsView from './src/components/MapMops';
-import Header from './src/components/Header';
-import Icon from 'react-native-vector-icons/Ionicons';
-import MopDetailsView from './src/components/MopDetailsView';
 
-import { SideMenu, List, ListItem } from 'react-native-elements'
-import { DrawerItems, SafeAreaView } from 'react-navigation';
+import { DrawerNavigator, StackNavigator, DrawerItems, SafeAreaView } from 'react-navigation';
+import { List, ListItem, Icon } from 'react-native-elements'
+
+import DrawerContent from 'mopsik_mobile/src/components/DrawerContent';
+
+import HomeView from 'mopsik_mobile/src/components/HomeView';
+import MapMopsStack from 'mopsik_mobile/src/components/MapMopsStack';
+import FavouritesStack from 'mopsik_mobile/src/components/FavouritesStack';
+import SearchStack from 'mopsik_mobile/src/components/SearchStack';
+import SettingsView from 'mopsik_mobile/src/components/SettingsView';
+
+MOPS = require('mopsik_mobile/src/config/mops');
+FUNCTIONS = require('mopsik_mobile/src/config/functions');
+
+let _ = require('lodash');
 
 
-class HomeScreen extends Component {
-  static navigationOptions = {
-    drawerLabel: 'Home',
-    drawerIcon: ({ tintColor }) => (
-      <Image
-        source={require('./src/images/parking.png')}
-        style={[styles.icon, {width: 15, height: 15}]}
-      />
-    ),
-    header: ({ state, setParams, navigate }) => ({
-      left: (<Button
-          title={'Menu'}
-          onPress={() => navigate('DrawerToggle')}
-        />)
-    }),
-  };
-
-
-
-  constructor () {
-  super()
-  this.state = {
-    toggled: false
-  }
-  }
-
-  toggleSideMenu () {
-  this.setState({
-    toggled: !this.state.toggled
-  })
-  }
-
-  render() {
-    const { navigate } = this.props.navigation;
-    return (
-      <View style={styles.container}>
-        <Header navigation={this.props.navigation} />
-        <Text>HOME</Text>
-      </View>
-    );
-  }
+export default App = DrawerNavigator({
+  Home: { screen: HomeView,
+    navigationOptions : {
+      drawerLabel: 'Home',
+      drawerIcon: <Icon name='home' />,
+      title: 'Home'
+    }
+   },
+  MapMopsStack: { screen: MapMopsStack,
+    navigationOptions: {
+        drawerLabel: 'Mapa',
+        drawerIcon: <Icon name='map' />,
+    } },
+  FavouritesStack: { screen: FavouritesStack,
+    navigationOptions: {
+        drawerLabel: 'Ulubione MOPy',
+        drawerIcon: <Icon name='favorite' />,
+    } },
+  SearchStack: { screen: SearchStack,
+    navigationOptions: {
+        drawerLabel: 'Wyszukaj MOPa',
+        drawerIcon: <Icon name='search' />,
+    } },
+  Settings: { screen: SettingsView,
+    navigationOptions: {
+        drawerLabel: 'Ustawienia',
+        drawerIcon: <Icon name='build' />,
+    } },
+},{
+  drawerOpenRoute: 'DrawerOpen',
+  drawerCloseRoute: 'DrawerClose',
+  drawerToggleRoute: 'DrawerToggle',
+  contentComponent: DrawerContent
 }
-
-
-export const Drawer = DrawerNavigator({
-  Home: { screen: HomeScreen },
-  MapMops: { screen: MapMopsView },
-});
-
-
-export default App = StackNavigator({
-  Home: { screen: HomeScreen },
-  Drawer: { screen: Drawer },
-  MapMops: { screen: MapMopsView },
-  MopDetails: { screen: MopDetailsView }
-});
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F5FCFF',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    //justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+);
