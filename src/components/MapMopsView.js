@@ -1,17 +1,17 @@
 import React, {Component} from 'react';
 import {
-  Text,
   View,
   Image
 } from 'react-native';
 
 import MapView from 'react-native-maps';
-import {Icon} from 'react-native-elements'
+import {Text, Icon, Badge} from 'react-native-elements'
 
 import Header from 'mopsik_mobile/src/components/Header';
-import styles from 'mopsik_mobile/src/config/styles'
+import styles, {m} from 'mopsik_mobile/src/config/styles'
 
 MOPS = require('mopsik_mobile/src/config/mops');
+FACILITIES = require('mopsik_mobile/src/config/facilities');
 THEMES = require('mopsik_mobile/src/config/themes');
 let _ = require('lodash');
 
@@ -42,7 +42,6 @@ export default class MapMopsView extends Component {
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
     );
   }
-
 
   componentDidMount() {
     MOPS.refresh();
@@ -93,6 +92,37 @@ export default class MapMopsView extends Component {
     this.setState({region: region, followPosition: false});
   }
 
+  getCallout = (marker, main_vehicle) => {
+    return (
+      <MapView.Callout onPress={() => {
+      this.props.navigation.navigate('MopDetails', {mop: marker})
+    }}>
+      <View
+        style={{
+          backgroundColor: THEMES.basic.backgroundWhite,
+          height: 150,
+          width: 150,
+          flex: 1
+        }}
+      >
+        <Text h4 numberOfLines={2}>{marker.title}</Text>
+        <Text numberOfLines={1}>Kierunek: {marker.direction}</Text>
+        {FACILITIES.getFacilitiesIconsShort(marker.facilities_short)}
+        <Text></Text>
+        <Text></Text>
+        <View style={{flex: 1, flexDirection: 'row'}}>
+          <Text>Zapełnienie:  </Text>
+          <Badge
+            value={marker.usage[main_vehicle] + '%'}
+            textStyle={{ color: marker.color[main_vehicle].text }}
+            containerStyle={{ backgroundColor: marker.color[main_vehicle].background}}
+          />
+        </View>
+      </View>
+    </MapView.Callout>
+  )
+  }
+
 
   render() {
     let {main_vehicle} = MOPS.settings;
@@ -136,7 +166,7 @@ export default class MapMopsView extends Component {
             onRegionChange={this.onRegionChange.bind(this)}
             showsUserLocation={true}
             showsMyLocationButton={true}
-            style={styles.map}
+            style={m()}
           >
             {mops.map((marker, i) => (
               <MapView.Marker
@@ -149,21 +179,7 @@ export default class MapMopsView extends Component {
                   style={{width: 25, height: 25}}
                   tintColor={marker.color[main_vehicle].background}
                 />
-                <MapView.Callout onPress={() => {
-                  this.props.navigation.navigate('MopDetails', {mop: marker})
-                }}>
-                  <View
-                    style={{
-                      backgroundColor: THEMES.basic.backgroundWhite,
-                      height: 100,
-                      width: 100,
-                    }}
-                  >
-                    <Text>{marker.title}</Text>
-                    <Text>{marker.description}</Text>
-                    <Text>Zapełnienie MOPa: {marker.usage[main_vehicle]}%</Text>
-                  </View>
-                </MapView.Callout>
+                {this.getCallout(marker, main_vehicle)}
               </MapView.Marker>
             ))}
           </MapView>

@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 import {
-  Text,
   View,
   AsyncStorage
 } from 'react-native';
 
-import {Button, ButtonGroup, Icon, CheckBox} from 'react-native-elements';
+import {Button, ButtonGroup, Icon, CheckBox, Text, Divider} from 'react-native-elements';
 
 import Header from 'mopsik_mobile/src/components/Header';
 import styles from 'mopsik_mobile/src/config/styles';
@@ -86,37 +85,43 @@ export default class SettingsView extends Component {
     return (
 
       <View style={styles.main}>
-        {header}
-        <View>
-          <Text>Wybierz Twój główny typ pojazdu</Text>
-          <Text>{this.first}</Text>
-          <ButtonGroup
-            onPress={this.updateIndex}
-            selectedIndex={selectedIndex}
-            buttons={this.buttons}
-            containerStyle={{height: 70}}
-          />
-          <Text>Wybierz typy pojazdów, dla których chcesz wyświetlać dane</Text>
-          <CheckBox
-            title='Samochód'
-            checked={this.state.car_selected}
-            onPress={() => this.updateMultipleSelection('car_selected')}
-            checkedColor={THEMES.basic.backgroundLightColor}
-          />
-          <CheckBox
-            title='Ciężarówka'
-            checked={this.state.truck_selected}
-            onPress={() => this.updateMultipleSelection('truck_selected')}
-            checkedColor={THEMES.basic.backgroundLightColor}
-          />
-          <CheckBox
-            title='Autobus'
-            checked={this.state.bus_selected}
-            onPress={() => this.updateMultipleSelection('bus_selected')}
-            checkedColor={THEMES.basic.backgroundLightColor}
-          />
-        </View>
-        {ok}
+      {header}
+      <View>
+      <Text style={{fontSize: 16, margin: 5, textAlign: 'center'}}>Wybierz Twój główny typ pojazdu</Text>
+      <ButtonGroup
+        onPress={this.updateIndex}
+        selectedIndex={selectedIndex}
+        buttons={this.buttons}
+        containerStyle={{height: 70}}
+        />
+      <Text></Text>
+      <Divider style={{ backgroundColor: THEMES.basic.backgroundLightGrey, height: 2 }} />
+      <Text></Text>
+      <Text style={{fontSize: 16, margin: 5, textAlign: 'center'}}>Wybierz typy pojazdów, dla których chcesz wyświetlać dane w szczegółowych informacjach o MOPie</Text>
+      <CheckBox
+        title='Samochód'
+        textStyle={{fontSize: 16}}
+        checked={this.state.car_selected}
+        onPress={() => this.updateMultipleSelection('car_selected')}
+        checkedColor='#8aa8e3'
+      />
+      <CheckBox
+        title='Ciężarówka'
+        textStyle={{fontSize: 16}}
+        checked={this.state.truck_selected}
+        onPress={() => this.updateMultipleSelection('truck_selected')}
+        checkedColor='#8aa8e3'
+      />
+      <CheckBox
+        title='Autobus'
+        textStyle={{fontSize: 16}}
+        checked={this.state.bus_selected}
+        onPress={() => this.updateMultipleSelection('bus_selected')}
+        checkedColor='#8aa8e3'
+      />
+      </View>
+      <Text></Text>
+      {ok}
       </View>
     );
   }

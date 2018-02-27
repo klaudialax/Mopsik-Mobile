@@ -31,7 +31,7 @@ export default class MyHeader extends Component {
     if (this.props.firstSettings) {
       return (
         <Header
-          centerComponent={{text: 'Konfiguracja aplikacji', style: {color: this.txt}}}
+          centerComponent={{text: 'Konfiguracja aplikacji', style: {color: this.txt, fontSize: 16}}}
           outerContainerStyles={{backgroundColor: this.bkg}}
         />
       )
@@ -39,7 +39,7 @@ export default class MyHeader extends Component {
     return (
       <Header
         leftComponent={this.leftButton()}
-        centerComponent={{text: this.props.title, style: {color: this.txt}}}
+        centerComponent={{text: this.props.title, style: {color: this.txt, fontSize: 16}}}
         rightComponent={{
           icon: 'refresh',
           color: this.txt,

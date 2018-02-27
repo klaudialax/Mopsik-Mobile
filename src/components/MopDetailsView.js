@@ -1,14 +1,15 @@
 import React, {Component} from 'react';
 import {
-  Text,
   View,
-  AsyncStorage
+  AsyncStorage,
+  ScrollView
 } from 'react-native';
 
-import {Button} from 'react-native-elements'
+import {Button, Text, Icon, Badge} from 'react-native-elements'
 
 import Header from 'mopsik_mobile/src/components/Header';
 import styles from 'mopsik_mobile/src/config/styles'
+
 
 MOPS = require('mopsik_mobile/src/config/mops');
 FUNCTIONS = require('mopsik_mobile/src/config/functions');
@@ -33,7 +34,6 @@ export default class MopDetailsView extends Component {
           this.setState({button: this.generateButton(inFavs)})
           ;
         }}
-        //large
         icon={{name: 'favorite', color: THEMES.basic.backgroundWhite}}
         backgroundColor={THEMES.basic.backgroundRed}
         color={THEMES.basic.backgroundWhite}
@@ -43,7 +43,6 @@ export default class MopDetailsView extends Component {
       return <Button
         title='Dodaj to ulubionych'
         onPress={() => this.addToFavourites(this.state.mop.id)}
-        //large
         icon={{name: 'favorite-border', color: THEMES.basic.red}}
         backgroundColor={THEMES.basic.backgroundWhite}
         color={THEMES.basic.red}
@@ -81,15 +80,55 @@ export default class MopDetailsView extends Component {
 
 
   render() {
+    let {mop} = this.state;
+    let {main_vehicle} = MOPS.settings;
     return (
-
+      <ScrollView>
       <View style={styles.main}>
         <Header navigation={this.props.navigation} title={this.state.mop.title} stack/>
+        <View style={{margin: 10}}>
+          <Text h3 style={{textAlign: 'center'}}>{mop.title}</Text>
+          <View style={{margin: 10, flex: 1, flexDirection: 'row', width: 360}}>
+            <View style={{margin: 10,
+      width: 240}}>
+              <Text h4>Kierunek: {mop.direction}</Text>
+              <Text style={{marginTop: 5, marginBottom: 5}}>
+                <Text style={{marginTop: 5, marginBottom: 5, fontWeight: 'bold'}}>Droga: </Text>
+                {mop.road_number}
+              </Text>
+              <Text style={{marginTop: 5, marginBottom: 5}}>
+                <Text style={{marginTop: 5, marginBottom: 5, fontWeight: 'bold'}}>Operator: </Text>
+                {mop.operator_name}
+              </Text>
+              <Text style={{marginTop: 5, marginBottom: 5}}>
+                <Text style={{marginTop: 5, marginBottom: 5, fontWeight: 'bold'}}>Kontakt: </Text>
+                {mop.operator_email}
+              </Text>
+              <Text style={{marginTop: 5, marginBottom: 5}}>{mop.description}</Text>
+            </View>
+            <View style={{
+            width: 120
+          }}>
+            {FACILITIES.getFacilitiesIconsLong(mop.facilities)}
+            </View>
+          </View>
+          <Text></Text>
+          <Text></Text>
+          <View style={{flex: 1, flexDirection: 'row'}}>
+            <Text>Zapełnienie:  </Text>
+            <Badge
+              value={mop.usage[main_vehicle] + '%'}
+              textStyle={{ color: mop.color[main_vehicle].text }}
+              containerStyle={{ backgroundColor: mop.color[main_vehicle].background}}
+            />
+          </View>
+        </View>
 
-        <Text>Detale mopa: {this.state.mop.title} </Text>
-        <Text>Opis: {this.state.mop.description} </Text>
         {this.state.button}
+        <Text></Text>
+        <Text></Text>
       </View>
+      </ScrollView>
     );
   }
 }

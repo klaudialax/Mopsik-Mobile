@@ -67,6 +67,7 @@ export default class FavouriteMopsView extends Component {
 
   render() {
     let {main_vehicle} = MOPS.settings;
+    console.log('favss', this.state.favouriteMOPsmapped);
     return (
 
       <View ref='favs'>
@@ -88,7 +89,7 @@ export default class FavouriteMopsView extends Component {
                 }
                 key={i}
                 title={fav.title}
-                subtitle={fav.id}
+                subtitle={'Droga: ' + fav.road_number + '; Kierunek: ' + fav.direction}
                 badge={{
                   value: fav.usage[main_vehicle] + "%",
                   textStyle: {color: fav.color[main_vehicle].text},

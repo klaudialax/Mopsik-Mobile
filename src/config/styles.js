@@ -3,9 +3,6 @@ import {
   Dimensions
 } from 'react-native';
 
-let width = Dimensions.get('window').width;
-let height = Dimensions.get('window').height * 0.8;
-
 export default styles = StyleSheet.create({
   container: {
     backgroundColor: '#f5fcff',
@@ -22,8 +19,8 @@ export default styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     flex: 1,
-    width: width,
-    height: height
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height * 0.8
   },
   container_map: {
     flex: 1,
@@ -37,3 +34,15 @@ export default styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+
+export const m = () => {
+  return {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  flex: 1,
+  width: Dimensions.get('window').width,
+  height: Dimensions.get('window').height * 0.8
+}}

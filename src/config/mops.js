@@ -1,4 +1,7 @@
 let _ = require('lodash');
+import {facilities_codes, facilities_codes_short} from 'mopsik_mobile/src/config/facilities';
+
+FUNCTIONS = require('mopsik_mobile/src/config/functions');
 
 let settings = {
   set: false,
@@ -69,15 +72,35 @@ let updateMop = (marker) => {
   }
 };
 
+let processMop = (mop) => {
+  let fac = [];
+  let fac_short = [];
+  for (let code of facilities_codes) {
+    if (mop[code]){
+      fac.push(code);
+    }
+  }
+  for (let code of facilities_codes_short) {
+    if (mop[code]){
+      fac_short.push(code);
+    }
+  }
+  return {
+    ...mop,
+    facilities: fac,
+    facilities_short: fac_short
+  };
+}
+
 let downloadMops = () => {
   fetch('http://reach.mimuw.edu.pl:8008/mops').then(response => (response) ? response.json() : {}).then((mops_dict) => {
     markers = [];
     for (let key in mops_dict) {
-      markers.push(mops_dict[key]);
+      mops.push(updateMop(processMop(mops_dict[key])));
     }
-    markers.map((marker) => {
-      mops.push(updateMop(marker));
-    });
+    if (favouriteMOPs.length === 0) {
+      FUNCTIONS.downloadFavourites();
+    }
   }).done();
 };
 
