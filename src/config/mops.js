@@ -1,18 +1,28 @@
 let _ = require('lodash');
-import {facilities_codes, facilities_codes_short} from 'mopsik_mobile/src/config/facilities';
+import {facilitiesCodes, facilitiesCodesShort} from 'mopsik_mobile/src/config/facilities';
 
 FUNCTIONS = require('mopsik_mobile/src/config/functions');
 
+/////// TODO
+// move to separate file
 let settings = {
   set: false,
   main_vehicle: 'car',
   main_vehicle_id: -1,
-  car_selected: false,
-  truck_selected: false,
-  bus_selected: false
+  vehicles_selected: {
+    car: false,
+    truck: false,
+    bus: false
+  }
 };
 
-let simple_legend = {
+/*
+ * simple color scale for usage of parking spots
+ * <0, 35> => green
+ * (35, 50> => yellow
+ * ...
+ */
+let simple_scale = {
   35: {
     background: 'green',
     text: 'white'
@@ -31,10 +41,11 @@ let simple_legend = {
   }
 };
 
-let get_color = (value, legend) => {
-  for (let key in legend) {
+/* assigns background and text color to the value according to the passed scale */
+let get_color = (value, scale) => {
+  for (let key in scale) {
     if (value <= key)
-      return legend[key];
+      return scale[key];
   }
   return {
     background: 'black',
@@ -42,10 +53,11 @@ let get_color = (value, legend) => {
   };
 };
 
+/* 'global' variables */
 let mops = [];
 let favouriteMOPs = [];
 let favouriteMOPsmapped = [];
-let savedLocation = {
+let savedLocation = { //Warsaw center
   latitude: 52.226,
   longitude: 21,
   latitudeDelta: 0.0922,
@@ -53,34 +65,35 @@ let savedLocation = {
 };
 let lastLocationUpdate = new Date().getTime();
 
+/* calculates new usage and color for updated number of taken parking spots */
 let updateMop = (marker) => {
   usage_car = (marker.available.car > 0) ? Math.floor(marker.taken.car * 100 / marker.available.car) : 0;
   usage_truck = (marker.available.truck > 0) ? Math.floor(marker.taken.truck * 100 / marker.available.truck) : 0;
   usage_bus = (marker.available.bus > 0) ? Math.floor(marker.taken.bus * 100 / marker.available.bus) : 0;
   return {
-    ...marker,
     usage: {
       car: usage_car,
       truck: usage_truck,
       bus: usage_bus
     },
     color: {
-      car: get_color(usage_car, simple_legend),
-      truck: get_color(usage_truck, simple_legend),
-      bus: get_color(usage_bus, simple_legend)
+      car: get_color(usage_car, simple_scale),
+      truck: get_color(usage_truck, simple_scale),
+      bus: get_color(usage_bus, simple_scale)
     }
   }
 };
 
+/* adds lists of facilities available to MOP dict */
 let processMop = (mop) => {
   let fac = [];
   let fac_short = [];
-  for (let code of facilities_codes) {
+  for (let code of facilitiesCodes) {
     if (mop[code]){
       fac.push(code);
     }
   }
-  for (let code of facilities_codes_short) {
+  for (let code of facilitiesCodesShort) {
     if (mop[code]){
       fac_short.push(code);
     }
@@ -92,11 +105,22 @@ let processMop = (mop) => {
   };
 }
 
+/*
+ * downloads all parameters for all mops
+  * makes API call
+  * parses response
+  * saves to variables
+ * called in HomeView
+ */
 let downloadMops = () => {
   fetch('http://reach.mimuw.edu.pl:8008/mops').then(response => (response) ? response.json() : {}).then((mops_dict) => {
     markers = [];
     for (let key in mops_dict) {
-      mops.push(updateMop(processMop(mops_dict[key])));
+      marker = processMop(mops_dict[key]);
+      u = updateMop(marker);
+      marker.usage = u.usage;
+      marker.color = u.color;
+      mops.push(marker);
     }
     if (favouriteMOPs.length === 0) {
       FUNCTIONS.downloadFavourites();
@@ -104,15 +128,25 @@ let downloadMops = () => {
   }).done();
 };
 
+/*
+ * downloads number of taken spaces for all mops
+  * makes API calculates
+  * parses response
+  * saves to variables
+ * called when refresh is pressed and on rendering views
+ */
 let downloadUsages = () => {
   fetch('http://reach.mimuw.edu.pl:8008/taken').then(response => (response) ? response.json() : {}).then((taken_dict) => {
     mops.map((marker) => {
       marker.taken = taken_dict[marker.id].taken;
-      marker = updateMop(marker);
+      u = updateMop(marker);
+      marker.usage = u.usage;
+      marker.color = u.color;
     });
   }).done();
 };
 
+/* function called when refresh button is pressed */
 let refresh = () => {
   downloadUsages();
 };

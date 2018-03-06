@@ -30,7 +30,7 @@ export default DrawerContent = (props) => {
     <View style={{flex: 1}}>
       <View
         style={{
-          backgroundColor: THEMES.basic.backgroundWhite,
+          backgroundColor: THEMES.basic.White,
           height: 130,
           alignItems: 'center',
           justifyContent: 'center',
@@ -46,7 +46,7 @@ export default DrawerContent = (props) => {
       <DrawerItems {...tabs} />
       <View
         style={{
-          backgroundColor: THEMES.basic.backgroundLightGrey,
+          backgroundColor: THEMES.basic.LightGrey,
           position: 'absolute',
           left: 0,
           right: 0,
@@ -58,7 +58,7 @@ export default DrawerContent = (props) => {
       <Text></Text>
       <View
         style={{
-          backgroundColor: THEMES.basic.backgroundLightColor,
+          backgroundColor: THEMES.basic.LightColor,
           height: 45,
           alignItems: 'center',
           position: 'absolute',

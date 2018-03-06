@@ -6,6 +6,7 @@ import {Avatar} from 'react-native-elements'
 
 let _ = require('lodash');
 
+/* dict of all facilities available with coresponding icon names and polish names */
 export const facilities = {
   car_wash: {
     icon: 'local-car-wash',
@@ -49,7 +50,8 @@ export const facilities = {
   }
 };
 
-export const facilities_codes = [
+/* keys (codes) of facilities to be displayed in mop details view */
+export const facilitiesCodes = [
   'car_wash',
   'dangerous_cargo_places',
   'garage',
@@ -62,21 +64,23 @@ export const facilities_codes = [
   'toilets'
 ];
 
-export const facilities_codes_short = [
+/* keys (codes) of facilities to be displayed in callouts on the map */
+export const facilitiesCodesShort = [
   'petrol_station',
   'restaurant',
   'sleeping_places',
   'toilets'
 ];
 
+/* facility icon for callouts */
 let getFacilityIconShort = (code, i) => {
   let fac = facilities[code];
   return (
   <Avatar
     onPress={() => {}}
-    icon={{name: fac.icon, color: THEMES.basic.backgroundWhite}}
+    icon={{name: fac.icon, color: THEMES.basic.White}}
     raised
-    overlayContainerStyle={{backgroundColor: THEMES.basic.backgroundDarkColor}}
+    overlayContainerStyle={{backgroundColor: THEMES.basic.DarkColor}}
     width={35}
     height={35}
     rounded
@@ -85,6 +89,7 @@ let getFacilityIconShort = (code, i) => {
   )
 }
 
+/* facility icons for callouts combined */
 export const getFacilitiesIconsShort = (codes) => {
   return (
     <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start'}}>
@@ -95,14 +100,15 @@ export const getFacilitiesIconsShort = (codes) => {
   )
 }
 
+/* facility icon for details */
 let getFacilityIconLong = (code, i, active, onPress) => {
   let fac = facilities[code];
   return (
   <Avatar
     onPress={onPress}
-    icon={{name: fac.icon, color: THEMES.basic.backgroundWhite}}
+    icon={{name: fac.icon, color: THEMES.basic.White}}
     raised
-    overlayContainerStyle={{backgroundColor: active ? THEMES.basic.backgroundDarkColor : THEMES.basic.backgroundLightGrey}}
+    overlayContainerStyle={{backgroundColor: active ? THEMES.basic.DarkColor : THEMES.basic.LightGrey}}
     width={50}
     height={50}
     rounded
@@ -112,6 +118,11 @@ let getFacilityIconLong = (code, i, active, onPress) => {
   )
 }
 
+/*
+ * returns highlighted (blue) or not (grey) icon
+ * on press uses alert to display name of facility --> maybe we can think of something nicer
+ * OK button currently not visible
+ */
 const chooseFacilityIconLong = (codes, code, i) =>{
   if (_.includes(codes, code)){
     return getFacilityIconLong(code, i, true, () => {
@@ -125,6 +136,7 @@ const chooseFacilityIconLong = (codes, code, i) =>{
   }
 }
 
+/* facility icons for details combined */
 export const getFacilitiesIconsLong = (codes) => {
   return (
     <View style={{
@@ -133,7 +145,7 @@ export const getFacilitiesIconsLong = (codes) => {
       flexWrap: 'wrap',
       alignItems: 'flex-start'
     }}>
-    {facilities_codes.map((code, i) => (
+    {facilitiesCodes.map((code, i) => (
       chooseFacilityIconLong(codes, code, i)
     ))}
     </View>

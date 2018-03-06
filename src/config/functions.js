@@ -5,14 +5,15 @@ import {
 MOPS = require('../config/mops');
 let _ = require('lodash');
 
-
+/* uploades array of favourites to AsyncStorage */
 uploadFavourites = async (favourites) => {
     await AsyncStorage.setItem('favouriteMOPs',
       JSON.stringify(favourites));
 };
 
+/* deletes mop with id=id from favourites (in AsyncStorage and global variables) */
 deleteFavourite = (id) => {
-    favs = MOPS.favouriteMOPs;
+  favs = MOPS.favouriteMOPs;
   idx = favs.indexOf(id);
   favs.splice(idx, 1);
   uploadFavourites(favs);
@@ -24,6 +25,11 @@ deleteFavourite = (id) => {
  MOPS.favouriteMOPsmapped = favourites_mapped;
 };
 
+/*
+ * get favourites from AsyncStorage, update variables
+ * favouriteMOPs is a list of ids
+ * favouriteMOPsmapped is list of whole MOP objects (dicts with all parameters)
+ */
 downloadFavourites = () => {
   AsyncStorage.getItem('favouriteMOPs').then((response) => {
       if(response){

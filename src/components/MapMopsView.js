@@ -8,7 +8,7 @@ import MapView from 'react-native-maps';
 import {Text, Icon, Badge} from 'react-native-elements'
 
 import Header from 'mopsik_mobile/src/components/Header';
-import styles, {m} from 'mopsik_mobile/src/config/styles'
+import styles from 'mopsik_mobile/src/config/styles'
 
 MOPS = require('mopsik_mobile/src/config/mops');
 FACILITIES = require('mopsik_mobile/src/config/facilities');
@@ -17,6 +17,7 @@ let _ = require('lodash');
 
 export default class MapMopsView extends Component {
 
+  /* when creating component */
   constructor(props) {
     super(props);
     this.state = {
@@ -24,6 +25,7 @@ export default class MapMopsView extends Component {
       error: null,
       followPosition: true
     };
+    MOPS.refresh();
     navigator.geolocation.getCurrentPosition(
       (position) => {
         r = {
@@ -44,15 +46,19 @@ export default class MapMopsView extends Component {
   }
 
   componentDidMount() {
-    MOPS.refresh();
+    //MOPS.refresh();
+    /* location change listener */
     this.watchId = navigator.geolocation.watchPosition(
       (position) => {
+        /* new region object */
         r = {
           ...this.state.region,
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
           error: null,
         };
+        /* update region at most every 2 seconds */
+        /* updating state rerenders view with new location */
         var t = new Date().getTime();
         if((t - MOPS.lastLocationUpdate) >= 2000){
           if(this.state.followPosition){
@@ -73,6 +79,7 @@ export default class MapMopsView extends Component {
     navigator.geolocation.clearWatch(this.watchId);
   }
 
+  /* returns only mops that are on the visible part of the map */
   selectMops = () => {
     let mops = [];
     MOPS.mops.map((mop, i) => {
@@ -88,10 +95,12 @@ export default class MapMopsView extends Component {
     return mops;
   };
 
+  /* dragging a map disables followingPosition */
   onRegionChange(region) {
     this.setState({region: region, followPosition: false});
   }
 
+  /* callouts when pressed on marker */
   getCallout = (marker, main_vehicle) => {
     return (
       <MapView.Callout onPress={() => {
@@ -99,7 +108,7 @@ export default class MapMopsView extends Component {
     }}>
       <View
         style={{
-          backgroundColor: THEMES.basic.backgroundWhite,
+          backgroundColor: THEMES.basic.White,
           height: 150,
           width: 150,
           flex: 1
@@ -155,7 +164,7 @@ export default class MapMopsView extends Component {
           name='my-location'
           raised
           reverse={this.state.followPosition}
-          color={THEMES.basic.backgroundLightColor}
+          color={THEMES.basic.LightColor}
           size={30}
         />
         </View>
@@ -166,7 +175,7 @@ export default class MapMopsView extends Component {
             onRegionChange={this.onRegionChange.bind(this)}
             showsUserLocation={true}
             showsMyLocationButton={true}
-            style={m()}
+            style={styles.map}
           >
             {mops.map((marker, i) => (
               <MapView.Marker

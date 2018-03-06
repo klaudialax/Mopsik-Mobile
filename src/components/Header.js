@@ -10,7 +10,7 @@ MOPS = require('mopsik_mobile/src/config/mops');
 THEMES = require('mopsik_mobile/src/config/themes');
 
 export default class MyHeader extends Component {
-  bkg = THEMES.basic.backgroundDarkColor;
+  bkg = THEMES.basic.DarkColor;
   txt = THEMES.basic.textLight;
   openMenu = () => this.props.navigation.navigate('DrawerToggle');
   goBack = () => {
@@ -20,6 +20,7 @@ export default class MyHeader extends Component {
 
   leftButton = () => {
     if (this.props.stack) {
+      /* we are in stack navigation, so on the left side of the header arrow is displayed instead of menu */
       return {icon: 'chevron-left', color: this.txt, onPress: this.goBack, underlayColor: this.bkg};
     }
     else {
@@ -29,6 +30,7 @@ export default class MyHeader extends Component {
 
   render() {
     if (this.props.firstSettings) {
+      /* while configuring the app header displays only title, no buttons */
       return (
         <Header
           centerComponent={{text: 'Konfiguracja aplikacji', style: {color: this.txt, fontSize: 16}}}
