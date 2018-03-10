@@ -11,7 +11,7 @@ export default styles = StyleSheet.create({
   main: {
     flex: 1,
     flexDirection: 'column',
-    //backgroundColor: 'white'
+    backgroundColor: 'white'
   },
   map: {
     position: 'absolute',

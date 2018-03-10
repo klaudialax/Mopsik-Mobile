@@ -67,9 +67,9 @@ let lastLocationUpdate = new Date().getTime();
 
 /* calculates new usage and color for updated number of taken parking spots */
 let updateMop = (marker) => {
-  usage_car = (marker.available.car > 0) ? Math.floor(marker.taken.car * 100 / marker.available.car) : 0;
-  usage_truck = (marker.available.truck > 0) ? Math.floor(marker.taken.truck * 100 / marker.available.truck) : 0;
-  usage_bus = (marker.available.bus > 0) ? Math.floor(marker.taken.bus * 100 / marker.available.bus) : 0;
+  usage_car = (marker.available.car > 0) ? Math.floor(marker.taken.car * 100 / marker.available.car) : undefined;
+  usage_truck = (marker.available.truck > 0) ? Math.floor(marker.taken.truck * 100 / marker.available.truck) : undefined;
+  usage_bus = (marker.available.bus > 0) ? Math.floor(marker.taken.bus * 100 / marker.available.bus) : undefined;
   return {
     usage: {
       car: usage_car,
