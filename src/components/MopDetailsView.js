@@ -87,7 +87,7 @@ export default class MopDetailsView extends Component {
 
   render() {
     let {mop} = this.state;
-    let {settings} = MOPS;
+    let {settings} = SETTINGS;
     let {main_vehicle} = settings;
     return (
       <View style={styles.main}>

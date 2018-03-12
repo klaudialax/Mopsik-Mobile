@@ -12,10 +12,11 @@ export default class UsageCircle extends Component {
         let {mop} = this.props;
         let {vehicle} = this.props;
         let usage = mop.usage[vehicle];
+        let available = mop.available[vehicle];
         return (
             <View style={{alignItems:'center'}}>
               <CircularProgress
-                percentage={(usage !== undefined) ? usage : 100}
+                percentage={usage}
                 blankColor="green"
                 donutColor="red"
                 fillColor="white"
@@ -23,7 +24,7 @@ export default class UsageCircle extends Component {
                 size={70}
               >
                 <View>
-                  <Text style={{fontSize: 17}}>{(usage !== undefined) ? (usage + '%') : '--'}</Text>
+                  <Text style={{fontSize: 17}}>{(available !== 0) ? (usage + '%') : '--'}</Text>
                 </View>
               </CircularProgress>
             </View>

@@ -12,6 +12,7 @@ import Header from 'mopsik_mobile/src/components/Header';
 import styles from 'mopsik_mobile/src/config/styles'
 
 MOPS = require('mopsik_mobile/src/config/mops');
+SETTINGS = require('mopsik_mobile/src/config/settings');
 
 let _ = require('lodash');
 
@@ -34,7 +35,7 @@ export default class HomeView extends Component {
   componentWillMount() {
     AsyncStorage.getItem('settings').then((response) => {
       if (response) { // settings are already saved in AsyncStorage
-        MOPS.settings = JSON.parse(response);
+        SETTINGS.settings = JSON.parse(response);
       }
       else { // no setting saved, opening app configuration
         this.props.navigation.navigate('Settings', {first: true});

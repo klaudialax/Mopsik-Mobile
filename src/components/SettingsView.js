@@ -20,11 +20,11 @@ export default class SettingsView extends Component {
   constructor() {
     super();
     this.state = {
-      selectedIndex: MOPS.settings.main_vehicle_id,
+      selectedIndex: SETTINGS.settings.main_vehicle_id,
       vehicles_selected: {
-        car: MOPS.settings.vehicles_selected.car,
-        truck: MOPS.settings.vehicles_selected.truck,
-        bus: MOPS.settings.vehicles_selected.bus,
+        car: SETTINGS.settings.vehicles_selected.car,
+        truck: SETTINGS.settings.vehicles_selected.truck,
+        bus: SETTINGS.settings.vehicles_selected.bus,
       }
     };
     this.updateIndex = this.updateIndex.bind(this)
@@ -33,15 +33,15 @@ export default class SettingsView extends Component {
   /* update settings with new chosen 'main vehicle' */
   updateIndex = (selectedIndex) => {
     this.setState({selectedIndex: selectedIndex});
-    MOPS.settings.main_vehicle = this.buttons[selectedIndex].text_id;
-    MOPS.settings.main_vehicle_id = selectedIndex;
-    AsyncStorage.setItem('settings', JSON.stringify(MOPS.settings));
+    SETTINGS.settings.main_vehicle = this.buttons[selectedIndex].text_id;
+    SETTINGS.settings.main_vehicle_id = selectedIndex;
+    AsyncStorage.setItem('settings', JSON.stringify(SETTINGS.settings));
   };
 
   /* return button for main vehicle ButtonGroup */
   get_button = (text_id) => {
     return (<View><Icon name={VEHICLES[text_id].icon}
-                        color={((MOPS.settings.main_vehicle_id !== -1) && (text_id === MOPS.settings.main_vehicle))
+                        color={((SETTINGS.settings.main_vehicle_id !== -1) && (text_id === SETTINGS.settings.main_vehicle))
                           ? THEMES.basic.LightColor
                           : THEMES.basic.Grey}/>
                           <Text>{VEHICLES[text_id].name}</Text></View>)
@@ -78,8 +78,8 @@ export default class SettingsView extends Component {
     let st = {...this.state};
     let v = !st.vehicles_selected[vehicle_selected];
     st.vehicles_selected[vehicle_selected] = v;
-    MOPS.settings.vehicles_selected[vehicle_selected] = v;
-    AsyncStorage.setItem('settings', JSON.stringify(MOPS.settings));
+    SETTINGS.settings.vehicles_selected[vehicle_selected] = v;
+    AsyncStorage.setItem('settings', JSON.stringify(SETTINGS.settings));
     this.setState(st);
   };
 

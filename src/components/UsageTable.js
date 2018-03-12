@@ -25,7 +25,7 @@ export default class UsageTable extends Component {
   createRow = (tableRow_, fun) => {
     const tableRow = tableRow_;
     for (v of vehiclesCodes){
-      if (MOPS.settings.vehicles_selected[v]) {
+      if (SETTINGS.settings.vehicles_selected[v]) {
         tableRow.push(fun(v));
       }
     }

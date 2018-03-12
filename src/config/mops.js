@@ -3,19 +3,6 @@ import {facilitiesCodes, facilitiesCodesShort} from 'mopsik_mobile/src/config/fa
 
 FUNCTIONS = require('mopsik_mobile/src/config/functions');
 
-/////// TODO
-// move to separate file
-let settings = {
-  set: false,
-  main_vehicle: 'car',
-  main_vehicle_id: -1,
-  vehicles_selected: {
-    car: false,
-    truck: false,
-    bus: false
-  }
-};
-
 /*
  * simple color scale for usage of parking spots
  * <0, 35> => green
@@ -67,9 +54,9 @@ let lastLocationUpdate = new Date().getTime();
 
 /* calculates new usage and color for updated number of taken parking spots */
 let updateMop = (marker) => {
-  usage_car = (marker.available.car > 0) ? Math.floor(marker.taken.car * 100 / marker.available.car) : undefined;
-  usage_truck = (marker.available.truck > 0) ? Math.floor(marker.taken.truck * 100 / marker.available.truck) : undefined;
-  usage_bus = (marker.available.bus > 0) ? Math.floor(marker.taken.bus * 100 / marker.available.bus) : undefined;
+  usage_car = (marker.available.car > 0) ? Math.floor(marker.taken.car * 100 / marker.available.car) : 100;
+  usage_truck = (marker.available.truck > 0) ? Math.floor(marker.taken.truck * 100 / marker.available.truck) : 100;
+  usage_bus = (marker.available.bus > 0) ? Math.floor(marker.taken.bus * 100 / marker.available.bus) : 100;
   return {
     usage: {
       car: usage_car,
@@ -154,7 +141,6 @@ let refresh = () => {
 
 module.exports = {
   mops: mops,
-  settings: settings,
   downloadMops: downloadMops,
   refresh: refresh,
   favouriteMOPs: favouriteMOPs,

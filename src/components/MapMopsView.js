@@ -134,7 +134,7 @@ export default class MapMopsView extends Component {
 
 
   render() {
-    let {main_vehicle} = MOPS.settings;
+    let {main_vehicle} = SETTINGS.settings;
     let mops = this.selectMops();
 
     return (

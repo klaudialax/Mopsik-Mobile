@@ -3,6 +3,7 @@ import {
   Text,
   View,
   Image,
+  ScrollView
 } from 'react-native';
 
 import {DrawerItems} from 'react-navigation';
@@ -27,7 +28,9 @@ export default DrawerContent = (props) => {
     items: items_tab
   };
   return (
-    <View style={{flex: 1}}>
+    <ScrollView contentContainerStyle={{flexGrow: 1}}>
+    <View style={{flex: 1, justifyContent: 'space-between'}}>
+      <View>
       <View
         style={{
           backgroundColor: THEMES.basic.White,
@@ -44,13 +47,11 @@ export default DrawerContent = (props) => {
         <Text></Text>
       </View>
       <DrawerItems {...tabs} />
+      </View>
+      <View>
       <View
         style={{
           backgroundColor: THEMES.basic.LightGrey,
-          position: 'absolute',
-          left: 0,
-          right: 0,
-          bottom: 48,
         }}
       >
         <DrawerItems {...settings} />
@@ -61,17 +62,14 @@ export default DrawerContent = (props) => {
           backgroundColor: THEMES.basic.LightColor,
           height: 45,
           alignItems: 'center',
-          position: 'absolute',
-          left: 0,
-          right: 0,
-          bottom: 0,
-          paddingTop: 7
         }}
       >
         <Text style={{color: THEMES.basic.textLight, fontSize: 15}}>
           Mopsy Team® 2018
         </Text>
       </View>
+      </View>
     </View>
+    </ScrollView>
   );
 }

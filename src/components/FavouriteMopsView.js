@@ -69,7 +69,7 @@ export default class FavouriteMopsView extends Component {
   };
 
   render() {
-    let {main_vehicle} = MOPS.settings;
+    let {main_vehicle} = SETTINGS.settings;
     return (
 
       <View ref='favs'>
