@@ -23,8 +23,10 @@
   "devDependencies": {
     "babel-jest": "21.2.0",
     "babel-preset-react-native": "4.0.0",
+    "invariant": "^2.2.4",
     "jest": "21.2.1",
-    "react-test-renderer": "16.0.0"
+    "react-test-renderer": "16.0.0",
+    "tmp": "0.0.33"
   },
   "jest": {
     "preset": "react-native"

@@ -4,7 +4,7 @@ import {
   Text
 } from 'react-native';
 
-import {CircularProgress} from 'mopsik_mobile/src/components/CircularProgress';
+import {CircularProgress} from 'mopsik_mobile/src/components/tools/CircularProgress';
 
 export default class UsageCircle extends Component {
 

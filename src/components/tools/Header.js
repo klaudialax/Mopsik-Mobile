@@ -12,6 +12,9 @@ THEMES = require('mopsik_mobile/src/config/themes');
 export default class MyHeader extends Component {
   bkg = THEMES.basic.DarkColor;
   txt = THEMES.basic.textLight;
+
+
+
   openMenu = () => this.props.navigation.navigate('DrawerToggle');
   goBack = () => {
     DeviceEventEmitter.emit('refresh favourites', {});
@@ -45,7 +48,7 @@ export default class MyHeader extends Component {
         rightComponent={{
           icon: 'refresh',
           color: this.txt,
-          onPress: () => MOPS.refresh(),
+          onPress: () => {MOPS.refresh(); this.props.reload()},
           underlayColor: this.bkg
         }}
         outerContainerStyles={{backgroundColor: this.bkg}}

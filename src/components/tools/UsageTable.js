@@ -10,7 +10,7 @@ import {
 import {Text, Icon, Badge} from 'react-native-elements';
 import {Table, TableWrapper, Row, Rows, Col, Cols, Cell} from 'react-native-table-component';
 
-import UsageCircle from 'mopsik_mobile/src/components/UsageCircle';
+import UsageCircle from 'mopsik_mobile/src/components/tools/UsageCircle';
 import {VEHICLES, vehiclesCodes} from 'mopsik_mobile/src/config/vehicles';
 
 MOPS = require('mopsik_mobile/src/config/mops');

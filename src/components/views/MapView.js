@@ -4,10 +4,10 @@ import {
   Image
 } from 'react-native';
 
-import MapView from 'react-native-maps';
+import ReactNativeMaps_MapView from 'react-native-maps';
 import {Text, Icon, Badge} from 'react-native-elements'
 
-import Header from 'mopsik_mobile/src/components/Header';
+import Header from 'mopsik_mobile/src/components/tools/Header';
 import styles from 'mopsik_mobile/src/config/styles'
 
 MOPS = require('mopsik_mobile/src/config/mops');
@@ -15,7 +15,7 @@ FACILITIES = require('mopsik_mobile/src/config/facilities');
 THEMES = require('mopsik_mobile/src/config/themes');
 let _ = require('lodash');
 
-export default class MapMopsView extends Component {
+export default class MapView extends Component {
 
   /* when creating component */
   constructor(props) {
@@ -103,7 +103,7 @@ export default class MapMopsView extends Component {
   /* callouts when pressed on marker */
   getCallout = (marker, main_vehicle) => {
     return (
-      <MapView.Callout onPress={() => {
+      <ReactNativeMaps_MapView.Callout onPress={() => {
       this.props.navigation.navigate('MopDetails', {mop: marker})
     }}>
       <View
@@ -128,10 +128,13 @@ export default class MapMopsView extends Component {
           />
         </View>
       </View>
-    </MapView.Callout>
+    </ReactNativeMaps_MapView.Callout>
   )
   }
 
+  reload = () => {
+    this.setState({reload: true});
+  }
 
   render() {
     let {main_vehicle} = SETTINGS.settings;
@@ -139,7 +142,7 @@ export default class MapMopsView extends Component {
 
     return (
       <View style={styles.main}>
-        <Header navigation={this.props.navigation} title='Mapa'/>
+        <Header navigation={this.props.navigation} title='Mapa' reload={this.reload}/>
         <View style={{zIndex: 10}}>
         <Icon
           onPress={() => {
@@ -169,7 +172,7 @@ export default class MapMopsView extends Component {
         />
         </View>
         <View style={styles.container_map}>
-          <MapView
+          <ReactNativeMaps_MapView
             initialRegion={this.state.region}
             region={this.state.region}
             onRegionChange={this.onRegionChange.bind(this)}
@@ -178,7 +181,7 @@ export default class MapMopsView extends Component {
             style={styles.map}
           >
             {mops.map((marker, i) => (
-              <MapView.Marker
+              <ReactNativeMaps_MapView.Marker
                 coordinate={marker.coords}
                 title={marker.title}
                 description={marker.description}
@@ -189,9 +192,9 @@ export default class MapMopsView extends Component {
                   tintColor={marker.color[main_vehicle].background}
                 />
                 {this.getCallout(marker, main_vehicle)}
-              </MapView.Marker>
+              </ReactNativeMaps_MapView.Marker>
             ))}
-          </MapView>
+          </ReactNativeMaps_MapView>
           <Text>Latitude: {this.state.region.latitude}</Text>
           <Text>Longitude: {this.state.region.longitude}</Text>
         </View>

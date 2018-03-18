@@ -1,7 +1,7 @@
 let _ = require('lodash');
 import {facilitiesCodes, facilitiesCodesShort} from 'mopsik_mobile/src/config/facilities';
 
-FUNCTIONS = require('mopsik_mobile/src/config/functions');
+FAVOURITES = require('mopsik_mobile/src/config/favourites');
 
 /*
  * simple color scale for usage of parking spots
@@ -110,7 +110,7 @@ let downloadMops = () => {
       mops.push(marker);
     }
     if (favouriteMOPs.length === 0) {
-      FUNCTIONS.downloadFavourites();
+      FAVOURITES.downloadFavourites();
     }
   }).done();
 };

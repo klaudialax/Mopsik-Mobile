@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 
 import {StackNavigator} from 'react-navigation';
 
-import MopDetailsView from 'mopsik_mobile/src/components/MopDetailsView';
-import SearchView from 'mopsik_mobile/src/components/SearchView';
+import MopDetailsView from 'mopsik_mobile/src/components/views/MopDetailsView';
+import SearchView from 'mopsik_mobile/src/components/views/SearchView';
 
 
 MOPS = require('mopsik_mobile/src/config/mops');

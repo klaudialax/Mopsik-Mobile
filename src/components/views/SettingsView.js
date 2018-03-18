@@ -6,12 +6,11 @@ import {
 
 import {Button, ButtonGroup, Icon, CheckBox, Text, Divider} from 'react-native-elements';
 
-import Header from 'mopsik_mobile/src/components/Header';
+import Header from 'mopsik_mobile/src/components/tools/Header';
 import styles from 'mopsik_mobile/src/config/styles';
 import {VEHICLES, vehiclesCodes} from 'mopsik_mobile/src/config/vehicles';
 
 MOPS = require('mopsik_mobile/src/config/mops');
-FUNCTIONS = require('mopsik_mobile/src/config/functions');
 THEMES = require('mopsik_mobile/src/config/themes');
 let _ = require('lodash');
 
@@ -97,13 +96,17 @@ export default class SettingsView extends Component {
     )
   }
 
+  reload = () => {
+    this.setState({reload: true});
+  }
+
   render() {
     let {params} = this.props.navigation.state;
     /* first = False => app already configured */
     let first = (params) ? params.first : false;
     let header = (first)
       ? (<Header navigation={this.props.navigation} firstSettings/>)
-      : (<Header navigation={this.props.navigation} title='Ustawienia'/>);
+      : (<Header navigation={this.props.navigation} title='Ustawienia' reload={this.reload}/>);
     let ok = (first) ? this.get_ok_button() : undefined;
 
     const {selectedIndex} = this.state;

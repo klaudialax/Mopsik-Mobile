@@ -3,18 +3,19 @@ import {
   View,
   AsyncStorage,
   ScrollView,
-  StyleSheet
+  StyleSheet,
+  Dimensions
 } from 'react-native';
 
 import {Button, Text, Icon, Badge} from 'react-native-elements'
 
-import Header from 'mopsik_mobile/src/components/Header';
-import UsageTable from 'mopsik_mobile/src/components/UsageTable';
+import Header from 'mopsik_mobile/src/components/tools/Header';
+import UsageTable from 'mopsik_mobile/src/components/tools/UsageTable';
 import styles from 'mopsik_mobile/src/config/styles'
 
 
 MOPS = require('mopsik_mobile/src/config/mops');
-FUNCTIONS = require('mopsik_mobile/src/config/functions');
+FAVOURITES = require('mopsik_mobile/src/config/favourites');
 THEMES = require('mopsik_mobile/src/config/themes');
 let _ = require('lodash');
 
@@ -35,13 +36,14 @@ export default class MopDetailsView extends Component {
       return <Button
         title='Usuń z ulubionych'
         onPress={() => {
-          FUNCTIONS.deleteFavourite(this.state.mop.id);
+          FAVOURITES.deleteFavourite(this.state.mop.id);
           inFavs = this.isInFavourites(this.state.mop.id);
           this.setState({button: this.generateButton(inFavs)});
         }}
         icon={{name: 'favorite', color: THEMES.basic.White}}
         backgroundColor={THEMES.basic.Red}
         color={THEMES.basic.White}
+        buttonStyle={{width: 190}}
       />
     }
     else {
@@ -51,6 +53,7 @@ export default class MopDetailsView extends Component {
         icon={{name: 'favorite-border', color: THEMES.basic.red}}
         backgroundColor={THEMES.basic.White}
         color={THEMES.basic.red}
+        buttonStyle={{width: 190}}
       />
     }
   };
@@ -60,7 +63,8 @@ export default class MopDetailsView extends Component {
     let {mop} = this.props.navigation.state.params;
     this.state = {
       button: this.generateButton(this.isInFavourites(mop.id)),
-      mop: mop
+      mop: mop,
+      width: Dimensions.get('window').width
     };
   }
 
@@ -85,19 +89,26 @@ export default class MopDetailsView extends Component {
   };
 
 
+  reload = () => {
+    this.setState({reload: true});
+  }
+
+  changeWidth = () => {
+    this.setState({width: Dimensions.get('window').width})
+  }
+
   render() {
     let {mop} = this.state;
     let {settings} = SETTINGS;
     let {main_vehicle} = settings;
     return (
-      <View style={styles.main}>
-        <Header navigation={this.props.navigation} title={this.state.mop.title} stack/>
+      <View style={styles.main} onLayout={this.changeWidth}>
+        <Header navigation={this.props.navigation} title={this.state.mop.title} stack reload={this.reload}/>
         <ScrollView>
         <View style={{margin: 10}}>
           <Text h3 style={{textAlign: 'center'}}>{mop.title}</Text>
-          <View style={{margin: 10, flex: 1, flexDirection: 'row', width: 360}}>
-            <View style={{margin: 10,
-      width: 240}}>
+          <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-around',}}>
+            <View style={{margin: 10, width: (this.state.width - 140)}}>
               <Text h4>Kierunek: {mop.direction}</Text>
               <Text style={{marginTop: 5, marginBottom: 5}}>
                 <Text style={{marginTop: 5, marginBottom: 5, fontWeight: 'bold'}}>Droga: </Text>
@@ -115,13 +126,15 @@ export default class MopDetailsView extends Component {
                 <Text style={{marginTop: 5, marginBottom: 5, fontWeight: 'bold'}}>Pikietaż: </Text>
                 {mop.chainage}
               </Text>
+              <Text style={{marginTop: 5, marginBottom: 5}}>
+                <Text style={{marginTop: 5, marginBottom: 5, fontWeight: 'bold'}}>Miejscowość: </Text>
+                {mop.town}
+              </Text>
               <Text></Text>
               <Text></Text>
               {this.state.button}
             </View>
-            <View style={{
-            width: 120
-          }}>
+            <View style={{width: 120}}>
             {FACILITIES.getFacilitiesIconsLong(mop.facilities)}
             </View>
           </View>

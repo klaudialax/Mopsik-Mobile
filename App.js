@@ -3,16 +3,16 @@ import React, { Component } from 'react';
 import { DrawerNavigator, StackNavigator, DrawerItems, SafeAreaView } from 'react-navigation';
 import { List, ListItem, Icon } from 'react-native-elements'
 
-import DrawerContent from 'mopsik_mobile/src/components/DrawerContent';
+import DrawerContent from 'mopsik_mobile/src/components/tools/DrawerContent';
 
-import HomeView from 'mopsik_mobile/src/components/HomeView';
-import MapMopsStack from 'mopsik_mobile/src/components/MapMopsStack';
-import FavouritesStack from 'mopsik_mobile/src/components/FavouritesStack';
-import SearchStack from 'mopsik_mobile/src/components/SearchStack';
-import SettingsView from 'mopsik_mobile/src/components/SettingsView';
+import HomeView from 'mopsik_mobile/src/components/views/HomeView';
+import MapStack from 'mopsik_mobile/src/components/stacks/MapStack';
+import FavouritesStack from 'mopsik_mobile/src/components/stacks/FavouritesStack';
+import SearchStack from 'mopsik_mobile/src/components/stacks/SearchStack';
+import SettingsView from 'mopsik_mobile/src/components/views/SettingsView';
 
 MOPS = require('mopsik_mobile/src/config/mops');
-FUNCTIONS = require('mopsik_mobile/src/config/functions');
+FAVOURITES = require('mopsik_mobile/src/config/favourites');
 
 let _ = require('lodash');
 
@@ -25,7 +25,7 @@ export default App = DrawerNavigator({
       title: 'Home'
     }
    },
-  MapMopsStack: { screen: MapMopsStack,
+  MapMopsStack: { screen: MapStack,
     navigationOptions: {
         drawerLabel: 'Mapa',
         drawerIcon: <Icon name='map' />,

@@ -5,17 +5,17 @@ import {
 
 import {StackNavigator} from 'react-navigation';
 
-import MopDetailsView from 'mopsik_mobile/src/components/MopDetailsView';
-import MapMopsView from 'mopsik_mobile/src/components/MapMopsView';
+import MopDetailsView from 'mopsik_mobile/src/components/views/MopDetailsView';
+import MapView from 'mopsik_mobile/src/components/views/MapView';
 
 
 MOPS = require('mopsik_mobile/src/config/mops');
 let _ = require('lodash');
 
 
-export default MapMopsStack = StackNavigator({
+export default MapStack = StackNavigator({
   MapMops: {
-    screen: MapMopsView,
+    screen: MapView,
     navigationOptions: ({navigation}) => ({
       title: 'Mapa',
     })
