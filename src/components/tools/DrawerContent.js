@@ -39,7 +39,7 @@ export default DrawerContent = (props) => {
           justifyContent: 'center',
         }}
       >
-        <Image source={require('mopsik_mobile/src/images/logo_clear_all.png')} style={{
+        <Image source={SETTINGS.constants.logo} style={{
           flex: 1,
           width: 250,
           resizeMode: 'contain'
@@ -66,7 +66,7 @@ export default DrawerContent = (props) => {
         }}
       >
         <Text style={{color: THEMES.basic.textLight, fontSize: 15}}>
-          Mopsy Team® 2018
+          Mopsy Team 2018
         </Text>
       </View>
       </View>

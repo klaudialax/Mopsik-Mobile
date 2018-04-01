@@ -36,7 +36,7 @@ export default class FavouritesView extends Component {
   componentWillMount() {
     /* this listener makes sure that after deleting mop from favourites in details view,
       mop disapears from favourites view */
-    DeviceEventEmitter.addListener('refresh favourites', () => {
+    DeviceEventEmitter.addListener('refresh', () => {
       if (this.refs.favs) {
         this.setState({favouriteMOPsmapped: MOPS.favouriteMOPsmapped});
       }
@@ -62,20 +62,13 @@ export default class FavouritesView extends Component {
     }];
   };
 
-  onNavigatorEvent = event => {
-    switch (event.id) {
-      case 'willAppear':
-        this.setState({favouriteMOPsmapped: MOPS.favouriteMOPsmapped});
-        break;
-    }
-  };
-
   reload = () => {
     this.setState({reload: true});
   }
 
   render() {
     let {main_vehicle} = SETTINGS.settings;
+
     return (
 
       <View ref='favs'>

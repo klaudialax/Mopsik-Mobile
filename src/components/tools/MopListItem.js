@@ -5,7 +5,7 @@ import {
   Image
 } from 'react-native';
 
-import {ListItem} from 'react-native-elements'
+import {ListItem, Badge} from 'react-native-elements'
 
 export default class MopListItem extends Component {
 
@@ -17,18 +17,19 @@ export default class MopListItem extends Component {
           <ListItem
               roundAvatar
               avatar={
-                <Image
-                  source={require('mopsik_mobile/src/images/parking_clear.png')}
-                  style={{width: 35, height: 35}}
-                  tintColor={mop.color[main_vehicle].background}
-                />
+                <View style={{width: 40, alignItems: 'center'}}>
+                <Text
+                  style={{marginTop: 9, fontSize: 17, color: THEMES.basic.DarkGrey, textAlign: 'center'}}>
+                  {mop.road_number}
+                </Text>
+                </View>
               }
               title={mop.title}
-              subtitle={'Droga: ' + mop.road_number + '; Kierunek: ' + mop.direction}
+              subtitle={'Kierunek: ' + mop.direction}
               badge={{
                 value: mop.usage[main_vehicle] + "%",
-                textStyle: {color: mop.color[main_vehicle].text},
-                containerStyle: {marginTop: 10, backgroundColor: mop.color[main_vehicle].background}
+                textStyle: {color: mop.color[main_vehicle].text, fontSize: 15},
+                containerStyle: {marginTop: 10, backgroundColor: mop.color[main_vehicle].background, width:65}
               }}
               onPress={() => {
                 this.props.navigation.navigate('MopDetails', {mop: mop})

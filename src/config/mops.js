@@ -1,4 +1,9 @@
 let _ = require('lodash');
+
+import {
+  AsyncStorage
+} from 'react-native';
+
 import {facilitiesCodes, facilitiesCodesShort} from 'mopsik_mobile/src/config/facilities';
 
 FAVOURITES = require('mopsik_mobile/src/config/favourites');
@@ -75,20 +80,22 @@ let updateMop = (marker) => {
 let processMop = (mop) => {
   let fac = [];
   let fac_short = [];
+  let fac_dict = mop.facilities;
   for (let code of facilitiesCodes) {
-    if (mop[code]){
+    if (mop.facilities[code]){
       fac.push(code);
     }
   }
   for (let code of facilitiesCodesShort) {
-    if (mop[code]){
+    if (mop.facilities[code]){
       fac_short.push(code);
     }
   }
   return {
     ...mop,
     facilities: fac,
-    facilities_short: fac_short
+    facilities_short: fac_short,
+    facilities_dict: fac_dict
   };
 }
 
@@ -99,21 +106,31 @@ let processMop = (mop) => {
   * saves to variables
  * called in HomeView
  */
-let downloadMops = () => {
-  fetch('http://reach.mimuw.edu.pl:8008/mops').then(response => (response) ? response.json() : {}).then((mops_dict) => {
+downloadMops = (turnOffSplash) => {
+  fetch(SETTINGS.constants.api_mops).then(response => (response) ? response.json() : {}).then((mops_dict) => {
     markers = [];
     for (let key in mops_dict) {
       marker = processMop(mops_dict[key]);
       u = updateMop(marker);
       marker.usage = u.usage;
       marker.color = u.color;
-      mops.push(marker);
+      MOPS.mops.push(marker);
     }
     if (favouriteMOPs.length === 0) {
       FAVOURITES.downloadFavourites();
     }
+    AsyncStorage.getItem('mopsik_lastViewedMops').then((response) => {
+        if(response){
+          MOPS.lastViewedMops = JSON.parse(response);
+        }
+        else{
+          MOPS.lastViewedMops = [];
+        }
+        turnOffSplash();
+    }).done();
   }).done();
 };
+
 
 /*
  * downloads number of taken spaces for all mops
@@ -123,7 +140,7 @@ let downloadMops = () => {
  * called when refresh is pressed and on rendering views
  */
 let downloadUsages = () => {
-  fetch('http://reach.mimuw.edu.pl:8008/taken').then(response => (response) ? response.json() : {}).then((taken_dict) => {
+  fetch(SETTINGS.constants.api_taken).then(response => (response) ? response.json() : {}).then((taken_dict) => {
     mops.map((marker) => {
       marker.taken = taken_dict[marker.id].taken;
       u = updateMop(marker);
@@ -138,6 +155,8 @@ let refresh = () => {
   downloadUsages();
 };
 
+let lastViewedMops = [];
+
 
 module.exports = {
   mops: mops,
@@ -146,5 +165,6 @@ module.exports = {
   favouriteMOPs: favouriteMOPs,
   favouriteMOPsmapped: favouriteMOPsmapped,
   savedLocation: savedLocation,
-  lastLocationUpdate: lastLocationUpdate
+  lastLocationUpdate: lastLocationUpdate,
+  lastViewedMops: lastViewedMops
 };

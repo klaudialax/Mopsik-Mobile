@@ -7,7 +7,7 @@ let _ = require('lodash');
 
 /* uploades array of favourites to AsyncStorage */
 uploadFavourites = async (favourites) => {
-    await AsyncStorage.setItem('favouriteMOPs',
+    await AsyncStorage.setItem('mopsik_favouriteMOPs',
       JSON.stringify(favourites));
 };
 
@@ -31,7 +31,7 @@ deleteFavourite = (id) => {
  * favouriteMOPsmapped is list of whole MOP objects (dicts with all parameters)
  */
 downloadFavourites = () => {
-  AsyncStorage.getItem('favouriteMOPs').then((response) => {
+  AsyncStorage.getItem('mopsik_favouriteMOPs').then((response) => {
       if(response){
         favourites = JSON.parse(response);
       }

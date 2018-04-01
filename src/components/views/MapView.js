@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {
   View,
-  Image
+  Image,
+  Dimensions
 } from 'react-native';
 
 import ReactNativeMaps_MapView from 'react-native-maps';
@@ -23,7 +24,10 @@ export default class MapView extends Component {
     this.state = {
       region: MOPS.savedLocation,
       error: null,
-      followPosition: true
+      followPosition: true,
+      width: Dimensions.get('window').width,
+      height: Dimensions.get('window').height
+
     };
     MOPS.refresh();
     navigator.geolocation.getCurrentPosition(
@@ -46,7 +50,6 @@ export default class MapView extends Component {
   }
 
   componentDidMount() {
-    //MOPS.refresh();
     /* location change listener */
     this.watchId = navigator.geolocation.watchPosition(
       (position) => {
@@ -136,18 +139,24 @@ export default class MapView extends Component {
     this.setState({reload: true});
   }
 
+  changeMeasures = () => {
+    this.setState({
+      width: Dimensions.get('window').width,
+      height: Dimensions.get('window').height
+    })
+  }
+
   render() {
     let {main_vehicle} = SETTINGS.settings;
     let mops = this.selectMops();
 
     return (
-      <View style={styles.main}>
+      <View style={styles.main} onLayout={this.changeMeasures}>
         <Header navigation={this.props.navigation} title='Mapa' reload={this.reload}/>
         <View style={{zIndex: 10}}>
         <Icon
           onPress={() => {
             if(!this.state.followPosition){
-              console.log('follow');
               this.setState({
                 followPosition: true,
                 region: {
@@ -158,7 +167,6 @@ export default class MapView extends Component {
               })
             }
             else{
-              console.log('unfollow');
               this.setState({
                 followPosition: false
               })
@@ -177,17 +185,26 @@ export default class MapView extends Component {
             region={this.state.region}
             onRegionChange={this.onRegionChange.bind(this)}
             showsUserLocation={true}
-            showsMyLocationButton={true}
-            style={styles.map}
+            showsMyLocationButton={false}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              flex: 1,
+              width: this.state.width,
+              height: this.state.height - 120
+            }}
           >
             {mops.map((marker, i) => (
               <ReactNativeMaps_MapView.Marker
                 coordinate={marker.coords}
                 title={marker.title}
-                description={marker.description}
+                description={marker.direction}
                 key={i}>
                 <Image
-                  source={require('mopsik_mobile/src/images/parking_clear.png')}
+                  source={SETTINGS.constants.parking_icon_small}
                   style={{width: 25, height: 25}}
                   tintColor={marker.color[main_vehicle].background}
                 />

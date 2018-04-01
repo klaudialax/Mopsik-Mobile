@@ -1,33 +1,27 @@
 import {
-  StyleSheet,
-  Dimensions
+  StyleSheet
 } from 'react-native';
 
 export default styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f5fcff',
+    backgroundColor: THEMES.basic.LightGrey,
     alignItems: 'center',
   },
   main: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: 'white'
+    backgroundColor: 'transparent'
   },
-  map: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+  mainWhite: {
     flex: 1,
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height * 0.8
+    flexDirection: 'column',
+    backgroundColor: THEMES.basic.White
   },
   container_map: {
     flex: 1,
     backgroundColor: '#f5fcff',
     position: 'absolute',
-    top: 75,
+    top: 55,
     left: 0,
     right: 0,
     bottom: 0,

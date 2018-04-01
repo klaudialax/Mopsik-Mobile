@@ -40,27 +40,54 @@ export default class MopDetailsView extends Component {
           inFavs = this.isInFavourites(this.state.mop.id);
           this.setState({button: this.generateButton(inFavs)});
         }}
-        icon={{name: 'favorite', color: THEMES.basic.White}}
-        backgroundColor={THEMES.basic.Red}
-        color={THEMES.basic.White}
-        buttonStyle={{width: 190}}
+        icon={<Icon
+          name='favorite'
+          size={15}
+          color={THEMES.basic.LightPink}
+        />}
+        titleStyle={{
+          color: THEMES.basic.LightPink
+        }}
+        buttonStyle={{
+          width: 190,
+          backgroundColor: THEMES.basic.Red,
+          marginBottom: 5
+        }}
       />
     }
     else {
       return <Button
         title='Dodaj to ulubionych'
         onPress={() => this.addToFavourites(this.state.mop.id)}
-        icon={{name: 'favorite-border', color: THEMES.basic.red}}
-        backgroundColor={THEMES.basic.White}
-        color={THEMES.basic.red}
-        buttonStyle={{width: 190}}
+        icon={<Icon
+          name='favorite-border'
+          size={15}
+          color={THEMES.basic.red}
+        />}
+        titleStyle={{
+          color: THEMES.basic.Red
+        }}
+        buttonStyle={{
+          width: 190,
+          backgroundColor: THEMES.basic.LightPink,
+          marginBottom: 5
+        }}
       />
+    }
+  };
+
+  addToLastViewedMops = async (mop) => {
+    if(!MOPS.lastViewedMops.includes(mop)){
+      MOPS.lastViewedMops.unshift(mop);
+      MOPS.lastViewedMops = MOPS.lastViewedMops.slice(0, 3);
+      await AsyncStorage.setItem('mopsik_lastViewedMops', JSON.stringify(MOPS.lastViewedMops))
     }
   };
 
   constructor(props) {
     super(props);
     let {mop} = this.props.navigation.state.params;
+    this.addToLastViewedMops(mop.id);
     this.state = {
       button: this.generateButton(this.isInFavourites(mop.id)),
       mop: mop,
@@ -70,19 +97,19 @@ export default class MopDetailsView extends Component {
 
 //TODO - optimise
   addToFavourites = (id) => {
-    AsyncStorage.getItem('favouriteMOPs').then((response) => {
+    AsyncStorage.getItem('mopsik_favouriteMOPs').then((response) => {
       let favourites = [];
       if (response) {
         favourites = JSON.parse(response);
       }
       favourites.push(id);
-      AsyncStorage.setItem('favouriteMOPs', JSON.stringify(favourites));
       let favourites_mapped = [];
       favourites.map((fav, i) => {
         favourites_mapped.push(_.find(MOPS.mops, {id: fav}));
       });
       MOPS.favouriteMOPs = favourites;
       MOPS.favouriteMOPsmapped = favourites_mapped;
+      AsyncStorage.setItem('mopsik_favouriteMOPs', JSON.stringify(favourites));
       let inFavs = this.isInFavourites(this.state.mop.id);
       this.setState({button: this.generateButton(inFavs)});
     }).done();
@@ -102,7 +129,7 @@ export default class MopDetailsView extends Component {
     let {settings} = SETTINGS;
     let {main_vehicle} = settings;
     return (
-      <View style={styles.main} onLayout={this.changeWidth}>
+      <View style={styles.mainWhite} onLayout={this.changeWidth}>
         <Header navigation={this.props.navigation} title={this.state.mop.title} stack reload={this.reload}/>
         <ScrollView>
         <View style={{margin: 10}}>
@@ -116,11 +143,11 @@ export default class MopDetailsView extends Component {
               </Text>
               <Text style={{marginTop: 5, marginBottom: 5}}>
                 <Text style={{marginTop: 5, marginBottom: 5, fontWeight: 'bold'}}>Operator: </Text>
-                {mop.operator_name}
+                {mop.operator.name}
               </Text>
               <Text style={{marginTop: 5, marginBottom: 5}}>
                 <Text style={{marginTop: 5, marginBottom: 5, fontWeight: 'bold'}}>Kontakt: </Text>
-                {mop.operator_email}
+                {mop.operator.email}
               </Text>
               <Text style={{marginTop: 5, marginBottom: 5}}>
                 <Text style={{marginTop: 5, marginBottom: 5, fontWeight: 'bold'}}>Pikietaż: </Text>
