@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {StackNavigator} from 'react-navigation';
 
 import MopDetailsView from 'mopsik_mobile/src/components/views/MopDetailsView';

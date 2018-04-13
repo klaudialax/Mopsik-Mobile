@@ -1,10 +1,7 @@
 import React, {Component} from 'react';
-import {
-  DeviceEventEmitter
-} from 'react-native';
+import {DeviceEventEmitter} from 'react-native';
 
-import {SideMenu} from 'react-native-elements'
-import {Header} from 'react-native-elements'
+import {Header, SideMenu} from 'react-native-elements'
 
 MOPS = require('mopsik_mobile/src/config/mops');
 THEMES = require('mopsik_mobile/src/config/themes');
@@ -12,7 +9,6 @@ THEMES = require('mopsik_mobile/src/config/themes');
 export default class MyHeader extends Component {
   bkg = THEMES.basic.DarkColor;
   txt = THEMES.basic.textLight;
-
 
 
   openMenu = () => this.props.navigation.navigate('DrawerToggle');
@@ -50,7 +46,10 @@ export default class MyHeader extends Component {
         rightComponent={{
           icon: 'refresh',
           color: this.txt,
-          onPress: () => {MOPS.refresh(); this.props.reload()},
+          onPress: () => {
+            MOPS.refresh();
+            this.props.reload()
+          },
           underlayColor: this.bkg
         }}
         outerContainerStyles={{backgroundColor: this.bkg}}

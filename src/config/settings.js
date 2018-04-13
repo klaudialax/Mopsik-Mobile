@@ -15,7 +15,7 @@ let constants = {
   parking_icon_small: require('mopsik_mobile/src/images/parking_clear_small.png'),
   parking_icon: require('mopsik_mobile/src/images/parking_clear.png'),
   logo: require('mopsik_mobile/src/images/logo_clear_all.png')
-}
+};
 
 module.exports = {
   settings: settings,

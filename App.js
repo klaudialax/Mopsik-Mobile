@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-import { DrawerNavigator, StackNavigator, DrawerItems, SafeAreaView } from 'react-navigation';
+import {DrawerNavigator} from 'react-navigation';
 
 import {Icon} from 'react-native-elements'
 
@@ -19,37 +19,45 @@ let _ = require('lodash');
 
 
 export default App = DrawerNavigator({
-  Home: { screen: HomeStack,
-    navigationOptions : {
-      drawerLabel: 'Home',
-      drawerIcon: <Icon name='home' />,
-      title: 'Home'
-    }
-   },
-  MapMopsStack: { screen: MapStack,
-    navigationOptions: {
+    Home: {
+      screen: HomeStack,
+      navigationOptions: {
+        drawerLabel: 'Panel główny',
+        drawerIcon: <Icon name='home'/>,
+      }
+    },
+    MapMopsStack: {
+      screen: MapStack,
+      navigationOptions: {
         drawerLabel: 'Mapa',
-        drawerIcon: <Icon name='map' />,
-    } },
-  FavouritesStack: { screen: FavouritesStack,
-    navigationOptions: {
+        drawerIcon: <Icon name='map'/>,
+      }
+    },
+    FavouritesStack: {
+      screen: FavouritesStack,
+      navigationOptions: {
         drawerLabel: 'Ulubione MOPy',
-        drawerIcon: <Icon name='favorite' />,
-    } },
-  SearchStack: { screen: SearchStack,
-    navigationOptions: {
+        drawerIcon: <Icon name='favorite'/>,
+      }
+    },
+    SearchStack: {
+      screen: SearchStack,
+      navigationOptions: {
         drawerLabel: 'Wyszukaj MOPa',
-        drawerIcon: <Icon name='search' />,
-    } },
-  Settings: { screen: SettingsView,
-    navigationOptions: {
+        drawerIcon: <Icon name='search'/>,
+      }
+    },
+    Settings: {
+      screen: SettingsView,
+      navigationOptions: {
         drawerLabel: 'Ustawienia',
-        drawerIcon: <Icon name='build' />,
-    } },
-},{
-  drawerOpenRoute: 'DrawerOpen',
-  drawerCloseRoute: 'DrawerClose',
-  drawerToggleRoute: 'DrawerToggle',
-  contentComponent: DrawerContent
-}
+        drawerIcon: <Icon name='build'/>,
+      }
+    },
+  }, {
+    drawerOpenRoute: 'DrawerOpen',
+    drawerCloseRoute: 'DrawerClose',
+    drawerToggleRoute: 'DrawerToggle',
+    contentComponent: DrawerContent,
+  }
 );

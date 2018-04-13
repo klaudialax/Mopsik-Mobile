@@ -1,5 +1,4 @@
 light = {
-  'red': 'red',
   'textLight': '#fff',
   'DarkColor': '#3d6dcc',
   'White': 'white',

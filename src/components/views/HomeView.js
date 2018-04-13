@@ -1,14 +1,7 @@
 import React, {Component} from 'react';
-import {
-  View,
-  AsyncStorage,
-  TouchableOpacity,
-  Image,
-  ScrollView,
-  DeviceEventEmitter
-} from 'react-native';
+import {AsyncStorage, DeviceEventEmitter, ScrollView, View} from 'react-native';
 
-import {Button, Text, Divider} from 'react-native-elements'
+import {Divider, Text} from 'react-native-elements'
 
 import LastViewedMops from 'mopsik_mobile/src/components/tools/LastViewedMops';
 import NearestMops from 'mopsik_mobile/src/components/tools/NearestMops';
@@ -26,11 +19,11 @@ export default class HomeView extends Component {
 
   generateContents = () => {
     this.setState({contents: this.getContents(this.state.nearestMops)})
-  }
+  };
 
   getSplashScreen = () => {
-    return (<SplashScreen />)
-  }
+    return (<SplashScreen/>)
+  };
 
   constructor() {
     super();
@@ -39,7 +32,7 @@ export default class HomeView extends Component {
       contents: this.getSplashScreen(),
       region: null,
       nearestMops: null
-    }
+    };
     navigator.geolocation.getCurrentPosition(
       (position) => {
         r = {
@@ -49,14 +42,17 @@ export default class HomeView extends Component {
         MOPS.savedLocation = {
           ...MOPS.savedLocation,
           ...r
-        };;
+        };
+        let nearest = findNearestMop(r.latitude, r.longitude);
         this.state = {
           ...this.state,
           region: r,
+          nearestMops: nearest,
         };
       },
-      (error) => {},
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
+      (error) => {
+      },
+      {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000},
     );
 
   }
@@ -68,7 +64,7 @@ export default class HomeView extends Component {
       nearestMops: nearest,
       contents: this.getContents(nearest)
     });
-  }
+  };
 
   componentDidMount() {
     /* location change listener */
@@ -81,18 +77,20 @@ export default class HomeView extends Component {
         };
         /* update region at most every 2 seconds */
         /* updating state rerenders view with new location */
-        var t = new Date().getTime();
-        if((t - MOPS.lastLocationUpdate) >= 2000){
+        const t = new Date().getTime();
+        if ((t - MOPS.lastLocationUpdate) >= 2000) {
           MOPS.savedLocation = {
             ...MOPS.savedLocation,
             ...r
           };
           MOPS.lastLocationUpdate = t;
           this.updateStateWithNewLocation(r);
-      }
+        }
       },
-      (error) => {console.log('error', error)},
-      {enableHighAccuracy: true, timeout: 20000, distanceFilter: 10},
+      (error) => {
+        console.log('error', error)
+      },
+      {enableHighAccuracy: false, timeout: 20000, distanceFilter: 10},
     );
   }
 
@@ -115,12 +113,15 @@ export default class HomeView extends Component {
         this.props.navigation.navigate('Settings', {first: true});
       }
     }).done();
-  }
+  };
 
   componentWillMount() {
     if (MOPS.mops.length === 0) { // first opening app, downloading mop data
       this.setState({contents: this.getSplashScreen()})
-      MOPS.downloadMops(() => {this.getSettings(); this.generateContents()});
+      MOPS.downloadMops(() => {
+        this.getSettings();
+        this.generateContents()
+      });
     }
     else { // only refresh
       this.generateContents();
@@ -136,27 +137,25 @@ export default class HomeView extends Component {
   reload = () => {
     this.generateContents();
     this.setState({reload: !this.state.reload});
-  }
+  };
 
   getContents = (nearestMops) => {
     return (
       <View style={styles.main}>
-        <Header navigation={this.props.navigation} title='Home' reload={this.reload}/>
-        <View style={styles.main}>
-        <ScrollView>
-        <NearestMops nearestMops={nearestMops} navigation={this.props.navigation}/>
-        <LastViewedMops navigation={this.props.navigation}/>
-        <Divider style={{ backgroundColor: THEMES.basic.LightGrey, height: 0.8 }} />
-        <View style={{
-          alignItems: 'center',
-        }}>
-        <Text style={{marginBottom: 15, marginTop: 5}}>Logo wygenerowane przy pomocy Logo Maker</Text>
-        </View>
+        <Header navigation={this.props.navigation} title='Panel główny' reload={this.reload}/>
+        <ScrollView style={styles.main}>
+          <NearestMops nearestMops={nearestMops} navigation={this.props.navigation}/>
+          <LastViewedMops navigation={this.props.navigation}/>
+          <Divider style={{backgroundColor: THEMES.basic.LightGrey, height: 0.8}}/>
+          <View style={{
+            alignItems: 'center',
+          }}>
+            <Text style={{marginBottom: 15, marginTop: 5}}>Logo wygenerowane przy pomocy Logo Maker</Text>
+          </View>
         </ScrollView>
-        </View>
       </View>
     )
-  }
+  };
 
   render() {
     const {navigate} = this.props.navigation;

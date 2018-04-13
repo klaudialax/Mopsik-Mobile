@@ -1,13 +1,6 @@
 import React, {Component} from 'react';
-import {
-  View,
-  Dimensions,
-  Image,
-  DeviceEventEmitter,
-  ScrollView
-} from 'react-native';
+import {DeviceEventEmitter, FlatList, View} from 'react-native';
 
-import {List, ListItem} from 'react-native-elements'
 import Swipeout from 'react-native-swipeout';
 
 import MopListItem from 'mopsik_mobile/src/components/tools/MopListItem';
@@ -50,7 +43,7 @@ export default class FavouritesView extends Component {
     this.setState({favouriteMOPsmapped: MOPS.favouriteMOPsmapped});
   };
 
- /* buttons apearing when swiping left elements on favourites list */
+  /* buttons apearing when swiping left elements on favourites list */
   swipeBtns = (id) => {
     return [{
       text: 'Usuń',
@@ -64,7 +57,7 @@ export default class FavouritesView extends Component {
 
   reload = () => {
     this.setState({reload: true});
-  }
+  };
 
   render() {
     let {main_vehicle} = SETTINGS.settings;
@@ -73,18 +66,18 @@ export default class FavouritesView extends Component {
 
       <View ref='favs'>
         <Header navigation={this.props.navigation} title='Ulubione MOPy' reload={this.reload}/>
-        <ScrollView>
-        <List containerStyle={{marginBottom: 100}}>
-          {this.state.favouriteMOPsmapped.map((fav, i) => (
-            <Swipeout right={this.swipeBtns(fav.id)}
+        <FlatList
+          data={this.state.favouriteMOPsmapped}
+          keyExtractor={item => item.id}
+          renderItem={({item, index}) => (
+            <Swipeout right={this.swipeBtns(item.id)}
                       autoClose
                       backgroundColor='transparent'
-                      key={i}>
-              <MopListItem mop={fav} key={i} navigation={this.props.navigation}/>
-            </Swipeout>
-          ))}
-        </List>
-        </ScrollView>
+                      key={index}>
+              <MopListItem mop={item} navigation={this.props.navigation}/>
+            </Swipeout>)}
+          style={{backgroundColor: THEMES.basic.White, marginBottom: 100}}
+        />
       </View>
     );
   }

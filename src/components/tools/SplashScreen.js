@@ -1,12 +1,5 @@
 import React, {Component} from 'react';
-import {
-  Image,
-  View,
-  Text
-} from 'react-native';
-
-import Header from 'mopsik_mobile/src/components/tools/Header';
-import styles from 'mopsik_mobile/src/config/styles'
+import {Image, Text, View} from 'react-native';
 
 MOPS = require('mopsik_mobile/src/config/mops');
 SETTINGS = require('mopsik_mobile/src/config/settings');
