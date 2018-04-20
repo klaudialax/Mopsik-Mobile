@@ -31,7 +31,7 @@ export default class MopListItem extends Component {
           containerStyle: {backgroundColor: mop.color[main_vehicle].background, width: 65}
         }}
         onPress={() => {
-          this.props.navigation.navigate('MopDetails', {mop: mop})
+          this.props.navigation.navigate('MopDetails', {mop: mop, showOnMap: true})
         }}
       />
     )

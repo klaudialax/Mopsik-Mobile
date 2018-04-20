@@ -9,7 +9,7 @@ import {Avatar, Divider, SearchBar} from 'react-native-elements'
 MOPS = require('mopsik_mobile/src/config/mops');
 let _ = require('lodash');
 
-const ITEMS_PER_PAGE = 25;
+const ITEMS_PER_PAGE = 40;
 
 export default class SearchView extends Component {
   constructor() {
@@ -33,9 +33,22 @@ export default class SearchView extends Component {
     return facs;
   };
 
-  findMops = (txt, param) => {
+  checkParam = (txt, mop, param) =>{
+    return mop[param].toLowerCase().match(txt)
+  }
+
+  checkParams = (txt, mop) => {
+    return (
+         this.checkParam(txt, mop, 'title')
+      || this.checkParam(txt, mop, 'road_number')
+      || this.checkParam(txt, mop, 'town')
+      || this.checkParam(txt, mop, 'direction')
+    )
+  }
+
+  findMops = (txt) => {
     return MOPS.mops.filter((mop) => {
-      return mop[param].toLowerCase().match(txt)
+      return this.checkParams(txt, mop)
     })
   };
 
@@ -48,20 +61,30 @@ export default class SearchView extends Component {
     return true;
   };
 
+  allFacsOff = (facs) => {
+    console.log(facs);
+    for (f in facs) {
+      if (facs[f]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   filterMops = (mops, facs) => {
+    if(this.allFacsOff(facs)){
+      console.log('true')
+      return mops;
+    }
     return mops.filter((mop) => {
-      return this.matchFacilities(mop, facs)
+      return this.matchFacilities(mop, facs);
     })
   };
 
   changeSearchPhrase = (t) => {
     this.setState({searchPhrase: t});
     let txt = (t && t !== "") ? t.toLowerCase() : "";
-    let found_name = this.findMops(txt, 'title');
-    let found_road = this.findMops(txt, 'road_number');
-    let found_town = this.findMops(txt, 'town');
-    let found_direction = this.findMops(txt, 'direction');
-    let found = _.union(found_direction, found_name, found_road, found_town);
+    let found = this.findMops(txt);
     let found_filtered = this.filterMops(found, this.state.facilities);
 
     this.setState({
@@ -100,10 +123,27 @@ export default class SearchView extends Component {
     });
   };
 
+  getFacilityIcon = (f, i, facs) => {
+    return (
+      <Avatar
+        onPress={() => this.checkFacility(f)}
+        icon={{name: facs[f].icon, color: THEMES.basic.White}}
+        raised
+        overlayContainerStyle={{backgroundColor: this.state.facilities[f] ? THEMES.basic.DarkColor : THEMES.basic.LightGrey}}
+        width={50}
+        height={50}
+        rounded={THEMES.roundedIcons}
+        key={i}
+        containerStyle={{margin: 3}}
+      />
+    )
+  }
+
 
   render() {
     const facs = FACILITIES.facilities;
-    const fac_codes = FACILITIES.filterFacilitiesCodes;
+    const facCodes = FACILITIES.filterFacilitiesCodes;
+    const fHalfLength = Math.ceil(facCodes.length / 2);
     return (
       <View>
         <Header navigation={this.props.navigation} title='Wyszukaj MOPa' reload={this.reload}/>
@@ -118,28 +158,23 @@ export default class SearchView extends Component {
           clearIcon={{color: THEMES.basic.DarkGrey, name: 'close'}}
         />
         <ScrollView>
+        <View style={{padding: 5, paddingLeft: 15, paddingRight: 15, backgroundColor: THEMES.basic.White}}>
           <View style={{
             flex: 1,
             flexDirection: 'row',
             flexWrap: 'wrap',
-            justifyContent: 'center',
-            backgroundColor: THEMES.basic.White
+            justifyContent: 'space-around'
           }}>
-            {fac_codes.map((f, i) => {
-              return (
-                <Avatar
-                  onPress={() => this.checkFacility(f)}
-                  icon={{name: facs[f].icon, color: THEMES.basic.White}}
-                  raised
-                  overlayContainerStyle={{backgroundColor: this.state.facilities[f] ? THEMES.basic.DarkColor : THEMES.basic.LightGrey}}
-                  width={50}
-                  height={50}
-                  rounded={THEMES.roundedIcons}
-                  key={i}
-                  containerStyle={{margin: 3}}
-                />
-              )
-            })}
+            {facCodes.slice(0, fHalfLength).map((f, i) => this.getFacilityIcon(f, i, facs))}
+          </View>
+          <View style={{
+            flex: 1,
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            justifyContent: 'space-around'
+          }}>
+            {facCodes.slice(fHalfLength, facCodes.length).map((f, i) => this.getFacilityIcon(f, i, facs))}
+          </View>
           </View>
           <Divider style={{backgroundColor: THEMES.basic.DarkGrey, height: 0.8}}/>
           <View>
@@ -148,7 +183,7 @@ export default class SearchView extends Component {
               keyExtractor={item => item.id}
               renderItem={({item, index}) => (<MopListItem mop={item} key={index} navigation={this.props.navigation}/>)}
               onEndReached={this.loadMore}
-              style={{backgroundColor: THEMES.basic.White}}
+              style={{backgroundColor: THEMES.basic.White, marginBottom: 130}}
             />
           </View>
         </ScrollView>

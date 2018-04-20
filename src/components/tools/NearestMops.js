@@ -76,7 +76,7 @@ export default class NearestMops extends Component {
               buttonStyle={{backgroundColor: THEMES.basic.DarkColor, width: 140, marginBottom: 5}}
               title='Szczegóły'
               onPress={() => {
-                this.props.navigation.navigate('MopDetails', {mop: mop})
+                this.props.navigation.navigate('MopDetails', {mop: mop, showOnMap: true})
               }}/>
           </View>
           <View style={{

@@ -132,5 +132,5 @@ export default class UsageTable extends Component {
 const styles_ = StyleSheet.create({
   head: {backgroundColor: '#f1f8ff'},
   title: {flex: 1, backgroundColor: '#f6f8fa'},
-  text: {textAlign: 'center', fontSize: 15}
+  text: {textAlign: 'center', fontSize: 15, padding: 1}
 });

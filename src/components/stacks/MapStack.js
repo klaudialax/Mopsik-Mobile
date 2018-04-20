@@ -12,18 +12,8 @@ let _ = require('lodash');
 
 
 export default MapStack = StackNavigator({
-  MapMops: {
-    screen: MapView,
-    navigationOptions: ({navigation}) => ({
-      title: 'Mapa',
-    })
-  },
-  MopDetails: {
-    screen: MopDetailsView,
-    navigationOptions: ({navigation}) => ({
-      title: 'Szczegoly',
-    })
-  },
+  MapMops: {screen: MapView},
+  MopDetails: {screen: MopDetailsView},
 }, {
   headerMode: 'none',
   navigationOptions: {
