@@ -3,7 +3,12 @@ import {Image, ScrollView, Text, View} from 'react-native';
 
 import {DrawerItems} from 'react-navigation';
 
+/* side menu */
 export default DrawerContent = (props) => {
+  /* drawer items are split into two parts
+    - settings are placed at the bottom of the drawer
+    - all of the remaining tabs are at the top, below the logo
+  */
   items_set = [];
   items_tab = [];
   for (let item of props.items) {

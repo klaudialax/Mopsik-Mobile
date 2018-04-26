@@ -12,6 +12,7 @@ let _ = require('lodash');
 const ITEMS_PER_PAGE = 40;
 
 export default class SearchView extends Component {
+
   constructor() {
     super();
     this.state = {
@@ -25,6 +26,7 @@ export default class SearchView extends Component {
     }
   }
 
+  /* initializes facilities dict with all false values */
   getInitialChecks = () => {
     let facs = {};
     FACILITIES.filterFacilitiesCodes.map((f, i) => {
@@ -33,10 +35,12 @@ export default class SearchView extends Component {
     return facs;
   };
 
+  /* checks if mops param contains text txt */
   checkParam = (txt, mop, param) =>{
     return mop[param].toLowerCase().match(txt)
   }
 
+  /* searches for text txt in four parameters of the mop */
   checkParams = (txt, mop) => {
     return (
          this.checkParam(txt, mop, 'title')
@@ -46,12 +50,14 @@ export default class SearchView extends Component {
     )
   }
 
+  /* returns mops that contain text txt if any of the four parameters */
   findMops = (txt) => {
     return MOPS.mops.filter((mop) => {
       return this.checkParams(txt, mop)
     })
   };
 
+  /* checks if mop offers all of the facilities chosen in filters */
   matchFacilities = (mop, facs) => {
     for (f in facs) {
       if (facs[f] && !mop.facilities_dict[f]) {
@@ -61,6 +67,7 @@ export default class SearchView extends Component {
     return true;
   };
 
+  /* returns true if no facilities are chosen in filters */
   allFacsOff = (facs) => {
     console.log(facs);
     for (f in facs) {
@@ -71,6 +78,7 @@ export default class SearchView extends Component {
     return true;
   }
 
+  /* returns mops that match search phrase and filters */
   filterMops = (mops, facs) => {
     if(this.allFacsOff(facs)){
       console.log('true')
@@ -81,6 +89,7 @@ export default class SearchView extends Component {
     })
   };
 
+  /* update displayed mops according to searchPhrase */
   changeSearchPhrase = (t) => {
     this.setState({searchPhrase: t});
     let txt = (t && t !== "") ? t.toLowerCase() : "";
@@ -99,6 +108,7 @@ export default class SearchView extends Component {
     this.setState({reload: true});
   };
 
+  /* load more mops on reaching end of ScrollView */
   loadMore = () => {
     const {page, found_trimmed} = this.state;
     const start = page * ITEMS_PER_PAGE;
@@ -111,6 +121,7 @@ export default class SearchView extends Component {
     });
   };
 
+  /* handle checking icon in filters */
   checkFacility = (fac) => {
     const f = this.state.facilities;
     f[fac] = !f[fac];

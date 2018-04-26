@@ -5,6 +5,7 @@ import {ListItem} from 'react-native-elements'
 
 export default class MopListItem extends Component {
 
+  /* list element used in LastViewedMops, Favourites and Search */
   render() {
     let {main_vehicle} = SETTINGS.settings;
     let {mop} = this.props;

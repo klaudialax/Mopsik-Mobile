@@ -4,6 +4,7 @@ deg2Rad = (deg) => {
   return deg * Math.PI / 180;
 };
 
+/* calculates distance between two points in kilometers */
 pythagorasEquirectangular = (lat1, lon1, lat2, lon2) => {
   lat1 = this.deg2Rad(lat1);
   lat2 = this.deg2Rad(lat2);
@@ -16,6 +17,7 @@ pythagorasEquirectangular = (lat1, lon1, lat2, lon2) => {
   return d;
 };
 
+/* return two mops closest to point */
 export const findNearestMop = (latitude, longitude) => {
   let mindif1 = 99999;
   let closest1 = 0;

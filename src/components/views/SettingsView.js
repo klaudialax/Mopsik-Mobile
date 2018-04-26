@@ -124,6 +124,7 @@ export default class SettingsView extends Component {
     this.setState({reload: true});
   };
 
+  /* deletes all data saved by the app */
   resetApp = () => {
     AsyncStorage.removeItem('mopsik_settings').then(() => {
       AsyncStorage.removeItem('mopsik_favouriteMOPs').then(() => {

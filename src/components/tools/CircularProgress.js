@@ -1,4 +1,5 @@
-//https://github.com/stssoftware/react-native-svg-circular-progress
+// https://github.com/stssoftware/react-native-svg-circular-progress
+// latest changes have not been yet released on npm
 
 import React from 'react'
 import {StyleSheet, View} from 'react-native'

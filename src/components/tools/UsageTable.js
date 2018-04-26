@@ -50,6 +50,7 @@ export default class UsageTable extends Component {
     return this.createRow(['Typ pojazdu'], (v) => this.createHeader(VEHICLES[v]));
   };
 
+  /* Usage */
   createUsage = (vehicle) => {
     let {mop} = this.props;
     return (
@@ -61,6 +62,7 @@ export default class UsageTable extends Component {
     return this.createRow([], (v) => this.createUsage(v));
   };
 
+  /* Empty spaces */
   createFree = (vehicle) => {
     let {mop} = this.props;
     return (
@@ -72,6 +74,7 @@ export default class UsageTable extends Component {
     return this.createRow([], (v) => this.createFree(v));
   };
 
+  /* Taken spaces */
   createTaken = (vehicle) => {
     let {mop} = this.props;
     return (
@@ -83,7 +86,7 @@ export default class UsageTable extends Component {
     return this.createRow([], (v) => this.createTaken(v));
   };
 
-
+  /* Spaces overall */
   createOverall = (vehicle) => {
     let {mop} = this.props;
     return (
@@ -95,6 +98,7 @@ export default class UsageTable extends Component {
     return this.createRow([], (v) => this.createOverall(v));
   };
 
+  /* Create table */
   createTableData = () => {
     return [this.createFreeRow(), this.createTakenRow(), this.createOverallRow()]
   };

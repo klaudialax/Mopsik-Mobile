@@ -78,6 +78,7 @@ export default class MopDetailsView extends Component {
     }
   };
 
+  /* adds this mop to list of last viewed and trims it to the length of 3 */
   addToLastViewedMops = async (mop) => {
     if (!MOPS.lastViewedMops.includes(mop)) {
       MOPS.lastViewedMops.unshift(mop);

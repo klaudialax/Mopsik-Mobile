@@ -9,6 +9,7 @@ import SubHeader from 'mopsik_mobile/src/components/tools/SubHeader';
 let _ = require('lodash');
 
 export default class NearestMops extends Component {
+
   constructor(props) {
     super();
     this.state = {
@@ -28,6 +29,8 @@ export default class NearestMops extends Component {
     this.setState({width: Dimensions.get('window').width})
   };
 
+  /* event.nativeEvent.layout.width returns current size of the view,
+     badge with distance from the mop depends on number of digits of said distance */
   changeDistanceWidth = (event) => {
     this.setState({distanceWidth: event.nativeEvent.layout.width})
   };
@@ -100,6 +103,7 @@ export default class NearestMops extends Component {
     let top = (
       <SubHeader text={'Najbliższe MOPy'} rightComponent={false}/>
     );
+    /* loading animation */
     if (!this.state.nearestMops) {
       return (
         <View>
@@ -116,7 +120,6 @@ export default class NearestMops extends Component {
     }
 
     let {nearestMops} = this.state;
-    console.log(this.state.nearestMop)
 
     return (
       <View onLayout={this.changeWidth} style={{marginBottom: 10}}>

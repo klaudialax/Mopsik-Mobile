@@ -10,6 +10,14 @@ let _ = require('lodash');
 
 export default class LastViewedMops extends Component {
 
+  constructor() {
+    super();
+    this.state = {
+      reload: false
+    }
+  }
+
+  /* returns array with 3 laste viewed mops based on their saved ids */
   getLast = () => {
     last = [];
     MOPS.lastViewedMops.map((l, i) => {
@@ -18,13 +26,7 @@ export default class LastViewedMops extends Component {
     return last;
   };
 
-  constructor() {
-    super();
-    this.state = {
-      reload: false
-    }
-  }
-
+  /* deletes history of last viewed mops (from variables and AsyncStorage) */
   clearLastViewedMops = async () => {
     MOPS.lastViewedMops = [];
     AsyncStorage.setItem('mopsik_lastViewedMops', JSON.stringify([])).then(() => {

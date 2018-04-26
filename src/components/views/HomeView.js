@@ -17,14 +17,6 @@ let _ = require('lodash');
 
 export default class HomeView extends Component {
 
-  generateContents = () => {
-    this.setState({contents: this.getContents(this.state.nearestMops)})
-  };
-
-  getSplashScreen = () => {
-    return (<SplashScreen/>)
-  };
-
   constructor() {
     super();
     this.state = {
@@ -56,6 +48,14 @@ export default class HomeView extends Component {
     );
 
   }
+
+  generateContents = () => {
+    this.setState({contents: this.getContents(this.state.nearestMops)})
+  };
+
+  getSplashScreen = () => {
+    return (<SplashScreen/>)
+  };
 
   updateStateWithNewLocation = (r) => {
     let nearest = findNearestMop(r.latitude, r.longitude);
@@ -127,6 +127,8 @@ export default class HomeView extends Component {
       this.generateContents();
       MOPS.refresh();
     }
+    /* after opening mop detail through NearestMops and then coming back,
+       view is rerendered, so this mop appears in LastViewedMops */
     DeviceEventEmitter.addListener('refresh', () => {
       if (this.refs.home) {
         this.generateContents();
